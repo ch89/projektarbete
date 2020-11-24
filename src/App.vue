@@ -1,6 +1,6 @@
 <template>
 	<navbar></navbar>
-	<main class="container mx-auto p-6">
+	<main class="max-w-screen-xl mx-auto p-6">
 		<router-view></router-view>
 	</main>
 </template>

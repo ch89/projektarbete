@@ -1,6 +1,6 @@
 <template>
 	<nav class="shadow-md sticky z-10">
-		<div class="container mx-auto md:flex">
+		<div class="max-w-screen-xl mx-auto md:flex">
 			<div class="flex justify-between">
 				<a href="#" class="block p-6">
 					<img src="/images/logo.png" alt="Logo" class="h-8">
