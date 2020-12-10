@@ -1,41 +1,39 @@
 <template>
 	<div class="card-container">
 		<div class="card" :class="{ flip }">
-			<div class="shadow-md rounded-lg overflow-hidden card-front relative">
-				<img :src="card.image" alt="Food" @click="flip = true">
-				<img src="/images/avatar3.jpg" alt="Avatar" class="w-1/4 rounded-full border-4 border-white absolute right-4 transform -translate-y-1/2 avatar">
-				<div class="p-4">
-					<h3 class="font-bold text-lg mb-2">{{ card.title }}</h3>
-					<p class="text-gray-600 mb-2">{{ card.content }}</p>
-					<div class="flex justify-between items-center">
+			<div class="card-front">
+				<img :src="card.image" alt="Food">
+				<img src="/images/me.png" alt="Avatar" class="avatar">
+				<div class="card-body">
+					<h3 class="card-title">{{ card.title }}</h3>
+					<p class="card-content">{{ card.content }}</p>
+					<div class="card-icons">
 						<div>
-							<a href="#" v-for="rating in 5" :key="rating" :class="rating <= card.rating ? 'text-yellow-400' : 'text-gray-400'">
+							<a href="#" v-for="rating in 5" :key="rating" :class="rating <= card.rating ? 'rated' : 'star'" @click="rate(rating)">
 								<i class="fas fa-star"></i>
 							</a>
 						</div>
-						<a href="#" class="text-gray-400 hover:text-red-400" :class="{ 'text-red-400': card.liked }">
-							<i class="fas fa-heart"></i> 2
-						</a>
+						<div>
+							<a href="#" class="heart" :class="{ 'liked': card.liked }" @click="like">
+								<i class="fas fa-heart"></i> {{ card.likes }}
+							</a>
+							<a href="#" class="comment" @click="flip = true">
+								<i class="fas fa-comment"></i> {{ card.messages.length }}
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="card-back flex flex-col shadow-md rounded-lg overflow-hidden">
-				<button class="absolute right-4 top-4 focus:outline-none" @click="flip = false">
+			<div class="card-back">
+				<button class="close-button" @click="flip = false">
 					<i class="fas fa-times"></i>
 				</button>
-				<div class="flex-1 overflow-auto">
-					<div class="flex items-center p-4 border-b" v-for="(message, index) in card.messages" :key="index">
-						<img src="/images/avatar2.jpg" alt="Avatar" class="w-12 rounded-full mr-4">
-						<div>
-							<h3 class="font-bold">Name</h3>
-							<p class="text-gray-500">The message</p>
-						</div>
-						<span class="text-gray-500 text-sm ml-auto">2 hours ago</span>
-					</div>
+				<div class="messages">
+					<message v-for="(message, index) in card.messages" :key="index" :message="message"></message>
 				</div>
-				<form class="flex border-t rounded-b-lg" @submit.prevent="add">
-					<input placeholder="Type a message" class="flex-1 p-4 focus:outline-none" v-model="text">
-					<button class="font-bold text-white bg-blue-500 p-4 focus:outline-none">Send</button>
+				<form @submit.prevent="add">
+					<input placeholder="Type a message" v-model="message">
+					<button>Send</button>
 				</form>
 			</div>
 		</div>
@@ -43,11 +41,30 @@
 </template>
 
 <script>
+	import Message from "./Message"
+
 	export default {
 		props: ["card"],
+		components: { Message },
 		data() {
 			return {
-				flip: false
+				flip: false,
+				message: "",
+				currentCard: this.card
+			}
+		},
+		methods: {
+			add() {
+				this.currentCard.messages.push(this.message)
+
+				this.message = ""
+			},
+			like() {
+				this.currentCard.liked = ! this.currentCard.liked
+				this.currentCard.liked ? this.currentCard.likes++ : this.currentCard.likes--
+			},
+			rate(rating) {
+				this.currentCard.rating = rating
 			}
 		}
 	}
@@ -55,19 +72,13 @@
 
 <style scoped>
 	.card-container {
-		/*background-color: blue;*/
 		perspective: 1000px;
 	}
 
 	.card {
-		/*background-color: red;*/
 		transition: transform 1s;
 		transform-style: preserve-3d;
 	}
-
-	/*.card-container:hover .card {
-		transform: rotateY(180deg);
-	}*/
 
 	.flip {
 		transform: rotateY(180deg);
@@ -75,6 +86,42 @@
 
 	.card-front, .card-back, .avatar {
 		backface-visibility: hidden;
+	}
+
+	.card-front {
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+		border-radius: .5rem;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.card-back {
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+		border-radius: .5rem;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.card-body {
+		padding: 1rem;
+	}
+
+	.card-title {
+		font-size: 1.125rem;
+		font-weight: bold;
+		margin-bottom: .5rem;
+	}
+
+	.card-content {
+		color: #4B5563;
+		margin-bottom: .5rem;
+	}
+
+	.card-icons {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 
 	.card-back {
@@ -85,5 +132,70 @@
 		left: 0;
 		right: 0;
 		transform: rotateY(180deg);
+	}
+
+	.heart {
+		margin-right: .5rem;
+	}
+
+	.star, .heart, .comment {
+		color: #9CA3AF;
+	}
+
+	.rated {
+		color: #FBBF24;
+	}
+
+	.heart:hover, .liked {
+		color: #F87171;
+	}
+
+	.comment:hover {
+		color: #60A5FA;
+	}
+
+	.avatar {
+		width: 25%;
+		border-radius: 999px;
+		border: 4px solid white;
+		position: absolute;
+		right: 1rem;
+		transform: translateY(-50%);
+	}
+
+	.close-button {
+		position: absolute;
+		right: 1rem;
+		top: 1rem;
+	}
+
+	.close-button:focus {
+		outline: none;
+	}
+
+	.messages {
+		flex: 1;
+		overflow: auto;
+	}
+
+	form {
+		display: flex;
+		border-top: 1px solid #E5E7EB;
+	}
+
+	form input {
+		flex: 1;
+		padding: 1rem;
+	}
+
+	form input:focus, form button:focus {
+		outline: none;
+	}
+
+	form button {
+		font-weight: bold;
+		color: white;
+		background-color: #3B82F6;
+		padding: 1rem;
 	}
 </style>

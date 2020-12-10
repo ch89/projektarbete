@@ -1,5 +1,5 @@
 <template>
-	<div class="grid md:grid-cols-3 gap-6">
+	<div class="cards">
 		<card v-for="card in cards" :key="card.id" :card="card"></card>
 	</div>
 </template>
@@ -12,13 +12,32 @@
 		data() {
 			return {
 				cards: [
-					{ id: 1, title: "First", content: "Some info", image: "/images/food1.jpg", rating: 4, liked: true },
-					{ id: 2, title: "Second", content: "Some info", image: "/images/food2.jpg", rating: 3, liked: false },
-					{ id: 3, title: "Third", content: "Some info", image: "/images/food3.jpg", rating: 5, liked: false },
-					{ id: 4, title: "Fourth", content: "Some info", image: "/images/food4.jpg", rating: 1, liked: true },
-					{ id: 5, title: "Fifth", content: "Some info", image: "/images/food5.jpg", rating: 2, liked: false },
+					{ id: 1, title: "Hamburger", content: "A really sweet hamburger", image: "/images/food1.jpg", likes: 0, messages: [] },
+					{ id: 2, title: "Salad", content: "Some info about this recipe", image: "/images/food2.jpg", likes: 0, messages: [] },
+					{ id: 3, title: "Sushi", content: "And something else here", image: "/images/food3.jpg", likes: 0, messages: [] },
+					{ id: 4, title: "Pizza", content: "Some stuff goes here", image: "/images/food4.jpg", likes: 0, messages: [] },
+					{ id: 5, title: "Dessert", content: "More info here", image: "/images/food5.jpg", likes: 0, messages: [] },
 				]
 			}
 		}
 	}
 </script>
+
+<style>
+	.cards {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	@media(min-width: 768px) {
+		.cards {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media(min-width: 1024px) {
+		.cards {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>
