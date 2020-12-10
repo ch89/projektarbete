@@ -1,24 +1,8 @@
 # projektarbete
 
-## Project setup
+## Beskrivning
 ```
-npm install
+Hade från början tänkt göra en app för hotellrecensioner men gjorde en app för matrecept istället.
 ```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### URL
+http://christianholmqvist89.se/

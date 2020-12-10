@@ -12,6 +12,7 @@
 			<div class="nav-items" :class="show ? 'block' : 'hidden'">
 				<router-link to="/" class="nav-item">Home</router-link>
 				<router-link to="/recipes" class="nav-item">Recipes</router-link>
+				<router-link to="/create" class="nav-item">Create</router-link>
 			</div>
 		</div>
 	</nav>

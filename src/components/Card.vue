@@ -2,7 +2,8 @@
 	<div class="card-container">
 		<div class="card" :class="{ flip }">
 			<div class="card-front">
-				<img :src="card.image" alt="Food">
+				<button class="remove-button" @click="$store.commit('remove', card)">Remove</button>
+				<img :src="card.image" alt="Food" class="food-image">
 				<img src="/images/me.png" alt="Avatar" class="avatar">
 				<div class="card-body">
 					<h3 class="card-title">{{ card.title }}</h3>
@@ -84,7 +85,7 @@
 		transform: rotateY(180deg);
 	}
 
-	.card-front, .card-back, .avatar {
+	.card-front, .card-back, .avatar, .remove-button {
 		backface-visibility: hidden;
 	}
 
@@ -152,6 +153,22 @@
 
 	.comment:hover {
 		color: #60A5FA;
+	}
+
+	.remove-button {
+		background-color: #EF4444;
+		padding: .25rem .5rem;
+		border-radius: .5rem;
+		color: white;
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+	}
+
+	.food-image {
+		height: 250px;
+		width: 100%;
+		object-fit: cover;
 	}
 
 	.avatar {
